@@ -2,12 +2,12 @@
 
 zabbix-agent-extension-sentry - this extension for monitoring [sentry](https://github.com/getsentry/sentry).
 
-###Supported features
+### Supported features
 
-Discovering projects.
-Discovering queues.
-Fetch event per minutes statistic for each projects and organization too.
-Fetch event in queue for each queue.
+- Discovering projects.
+- Discovering queues.
+- Fetch event per minutes statistic for each projects and organization too.
+- Fetch event in queue for each queue.
 
 ### Installation
 
@@ -36,3 +36,5 @@ Also define next macro in host with sentry:
 - {$SENTRY_PORT} = wsgi port (9000)
 - {$SENTRY_TOKEN} = api token with `event:read, org:read, project:read`
 - {$SENTRY_URL} = url sentry (http://sentry.io)
+
+Set up ENV `SENTRY_CONF=/etc/sentry` in file `/etc/environment`.
