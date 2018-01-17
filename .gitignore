@@ -2,4 +2,5 @@
 *.xz
 /src
 /pkg
+/vendor/src
 /zabbix-agent-extension-sentry
