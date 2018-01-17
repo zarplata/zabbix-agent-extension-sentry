@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.4</version>
-    <date>2018-01-17T05:04:01Z</date>
+    <date>2018-01-17T05:13:12Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -564,7 +564,7 @@
                     <steps>
                         <step>
                             <name>Sentry Health</name>
-                            <url>http://{$SENTRY_URL}/_health/</url>
+                            <url>{$SENTRY_URL}/_health/</url>
                             <query_fields/>
                             <posts/>
                             <variables/>
@@ -593,7 +593,7 @@
                 </macro>
                 <macro>
                     <macro>{$SENTRY_URL}</macro>
-                    <value>sentry.io</value>
+                    <value>http://sentry.io</value>
                 </macro>
             </macros>
             <templates/>
