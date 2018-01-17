@@ -34,7 +34,7 @@ Common options:
   -d --discovery              Run low-level discovery for determine disks.
 
 Event options:
-  -s --sentry <dsn>           Sentry DSN [default: localhost].
+  -s --sentry <dsn>           Sentry DSN [default: http://localhost].
   -e --endpoint <epn>         Endpoint API [default: /api/0/].
   -o --organization <org>     Sentry organization [default: sentry].
   -t --token <tkn>            Sentry access token.
@@ -81,7 +81,7 @@ Other:
 			os.Exit(1)
 		}
 
-		sentryApi := fmt.Sprintf("%s%s%s", "http://", sentryDsn, sentryEpn)
+		sentryApi := fmt.Sprintf("%s%s", sentryDsn, sentryEpn)
 
 		err = event(
 			sentryApi,
