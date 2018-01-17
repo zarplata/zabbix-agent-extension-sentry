@@ -42,6 +42,7 @@ install:
 	cp .out/${BINARYNAME} /usr/bin/${BINARYNAME}
 	cp ${CONFIG} /etc/zabbix/zabbix_agentd.conf.d/${CONFIG}
 	cp ${SUDOERS} /etc/sudoers.d/${SUDOERS}
+	chmod 440 /etc/sudoers.d/${SUDOERS}
 	@echo Done 
 
 uninstall:
