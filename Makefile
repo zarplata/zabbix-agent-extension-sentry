@@ -16,37 +16,37 @@ default: all
 all: clean-all deps build 
 
 ver:
-        @echo ${VERSION}
+	@echo ${VERSION}
 
 clean-all: clean-deps
-        @echo Clean builded binaries
-        rm -rf .out/
-        @echo Done
+	@echo Clean builded binaries
+	rm -rf .out/
+	@echo Done
 
 build:
-        @echo Build
-        ln -s ${PWD}/vendor/ ${PWD}/vendor/src
-        GOPATH="${PWD}/vendor" go build -v -o .out/${BINARYNAME} -ldflags ${LDFLAGS} *.go
-        @echo Done
+	@echo Build
+	ln -s ${PWD}/vendor/ ${PWD}/vendor/src
+	GOPATH="${PWD}/vendor" go build -v -o .out/${BINARYNAME} -ldflags ${LDFLAGS} *.go
+	@echo Done
 
 clean-deps:
-        @echo Clean dependencies
-        rm -rf vendor/*
+	@echo Clean dependencies
+	rm -rf vendor/*
 
 deps:
-        @echo Fetch dependencies
-        git submodule update --init
+	@echo Fetch dependencies
+	git submodule update --init
 
 install:
-        @echo Install
-        cp .out/${BINARYNAME} /usr/bin/${BINARYNAME}
-        cp ${CONFIG} /etc/zabbix/zabbix_agentd.conf.d/${CONFIG}
-        cp ${SUDOERS} /etc/sudoers.d/${SUDOERS}
-        @echo Done 
+	@echo Install
+	cp .out/${BINARYNAME} /usr/bin/${BINARYNAME}
+	cp ${CONFIG} /etc/zabbix/zabbix_agentd.conf.d/${CONFIG}
+	cp ${SUDOERS} /etc/sudoers.d/${SUDOERS}
+	@echo Done 
 
 uninstall:
-        @echo Remove
-        rm /usr/bin/${BINARYNAME}
-        rm /etc/zabbix/zabbix_agentd.conf.d/${CONFIG}
-        rm /etc/sudoers.d/${SUDOERS}
-        @echo Done
+	@echo Remove
+	rm /usr/bin/${BINARYNAME}
+	rm /etc/zabbix/zabbix_agentd.conf.d/${CONFIG}
+	rm /etc/sudoers.d/${SUDOERS}
+	@echo Done
