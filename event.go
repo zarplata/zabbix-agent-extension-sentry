@@ -11,7 +11,6 @@ import (
 
 func event(
 	sentryApi string,
-	sentryOrg string,
 	sentryToken string,
 	discovery bool,
 	hostname string,
@@ -19,6 +18,12 @@ func event(
 	port int,
 	zabbixPrefix string,
 ) error {
+
+	var statTypes = []sentry.StatQuery{
+		"received",
+		"rejected",
+		"blacklisted",
+	}
 
 	client, err := sentry.NewClient(sentryToken, &sentryApi, nil)
 	if err != nil {
@@ -30,21 +35,24 @@ func event(
 		)
 	}
 
+	organizations, _, err := client.GetOrganizations()
+	if err != nil {
+		return hierr.Errorf(err, "can't fetch organizations.")
+	}
+
 	projects, err := client.GetProjects()
 	if err != nil {
-		return hierr.Errorf(err, "can't fetch all projects from sentry.")
+		return hierr.Errorf(err, "can't fetch projects.")
 	}
 
 	if discovery {
-		if err := discoveryProjects(sentryOrg, projects); err != nil {
-			return hierr.Errorf(err, "can't discovery projects.")
+		if err := discoveryOrgsProjects(organizations, projects); err != nil {
+			return hierr.Errorf(
+				err,
+				"can't discovery organizations and projects.",
+			)
 		}
 		os.Exit(0)
-	}
-
-	organization, err := client.GetOrganization(sentryOrg)
-	if err != nil {
-		return hierr.Errorf(err, "can't fetch organization.")
 	}
 
 	var metrics []*zsend.Metric
@@ -54,40 +62,52 @@ func event(
 	preview := time.Duration(59) * time.Second
 	later := now - int64(preview.Seconds())
 
-	organizationStats, err := client.GetOrganizationStats(
-		organization,
-		"received",
-		later,
-		now,
-		nil)
-	if err != nil {
-		return hierr.Errorf(err, "can't get organization stats.")
-	}
-	metrics = createMetrics(
-		hostname,
-		sentryOrg,
-		metrics,
-		organizationStats,
-		zabbixPrefix,
-	)
-	for _, project := range projects {
-		projectStats, err := client.GetProjectStats(
-			organization,
-			project,
-			"received",
-			later,
-			now,
-			nil)
-		if err != nil {
-			return hierr.Errorf(err, "can't get project	stats.")
+	for _, statType := range statTypes {
+
+		for _, organization := range organizations {
+
+			organizationStats, err := client.GetOrganizationStats(
+				organization,
+				statType,
+				later,
+				now,
+				nil)
+			if err != nil {
+				return hierr.Errorf(err, "can't get organization stats.")
+			}
+
+			metrics = createOrganizationMetrics(
+				hostname,
+				organization.Name,
+				statType,
+				metrics,
+				organizationStats,
+				zabbixPrefix,
+			)
+
+			for _, project := range projects {
+				projectStats, err := client.GetProjectStats(
+					organization,
+					project,
+					statType,
+					later,
+					now,
+					nil)
+				if err != nil {
+					return hierr.Errorf(err, "can't get project	stats.")
+				}
+
+				metrics = createProjectMetrics(
+					hostname,
+					project.Organization.Name,
+					project.Name,
+					statType,
+					metrics,
+					projectStats,
+					zabbixPrefix,
+				)
+			}
 		}
-		metrics = createMetrics(
-			hostname,
-			project.Name,
-			metrics,
-			projectStats,
-			zabbixPrefix,
-		)
 	}
 	packet := zsend.NewPacket(metrics)
 	sender := zsend.NewSender(

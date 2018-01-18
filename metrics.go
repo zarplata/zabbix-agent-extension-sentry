@@ -23,9 +23,10 @@ func makePrefix(prefix, key string) string {
 	)
 }
 
-func createMetrics(
+func createOrganizationMetrics(
 	hostname string,
 	name string,
+	statType sentry.StatQuery,
 	metrics []*zsend.Metric,
 	stats []sentry.Stat,
 	prefix string,
@@ -37,7 +38,35 @@ func createMetrics(
 			hostname,
 			makePrefix(
 				prefix,
-				fmt.Sprintf("event.count.[%s]", name),
+				fmt.Sprintf("organization.event.%s.[%s]", statType, name),
+			),
+			strconv.Itoa(sumEvents(stats)),
+		),
+	)
+	return metrics
+}
+
+func createProjectMetrics(
+	hostname string,
+	organization string,
+	name string,
+	statType sentry.StatQuery,
+	metrics []*zsend.Metric,
+	stats []sentry.Stat,
+	prefix string,
+) []*zsend.Metric {
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				fmt.Sprintf(
+					"project.event.%s.[%s][%s]",
+					statType,
+					organization,
+					name),
 			),
 			strconv.Itoa(sumEvents(stats)),
 		),

@@ -36,7 +36,6 @@ Common options:
 Event options:
   -s --sentry <dsn>           Sentry DSN [default: http://localhost].
   -e --endpoint <epn>         Endpoint API [default: /api/0/].
-  -o --organization <org>     Sentry organization [default: sentry].
   -t --token <tkn>            Sentry access token.
 
 Other:
@@ -74,7 +73,6 @@ Other:
 	if args["--event"].(bool) {
 		sentryDsn := args["--sentry"].(string)
 		sentryEpn := args["--endpoint"].(string)
-		sentryOrg := args["--organization"].(string)
 		sentryToken, ok := args["--token"].(string)
 		if !ok {
 			fmt.Println("need setup --token <tkn>")
@@ -85,7 +83,6 @@ Other:
 
 		err = event(
 			sentryApi,
-			sentryOrg,
 			sentryToken,
 			discovery,
 			hostname,

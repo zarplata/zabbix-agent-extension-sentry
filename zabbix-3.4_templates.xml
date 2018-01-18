@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.4</version>
-    <date>2018-01-17T05:13:12Z</date>
+    <date>2018-01-18T11:08:27Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -363,11 +363,11 @@
             </items>
             <discovery_rules>
                 <discovery_rule>
-                    <name>Sentry Projects Discovery</name>
+                    <name>Sentry Organizations Discovery</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>sentry.event.discovery[{$SENTRY_URL},{$SENTRY_TOKEN}]</key>
+                    <key>sentry.orgs.discovery[{$SENTRY_URL},{$SENTRY_TOKEN}]</key>
                     <delay>30</delay>
                     <status>0</status>
                     <allowed_hosts/>
@@ -389,17 +389,279 @@
                     <filter>
                         <evaltype>0</evaltype>
                         <formula/>
-                        <conditions/>
+                        <conditions>
+                            <condition>
+                                <macro>{#TYPE}</macro>
+                                <value>organization</value>
+                                <operator>8</operator>
+                                <formulaid>A</formulaid>
+                            </condition>
+                        </conditions>
                     </filter>
                     <lifetime>30d</lifetime>
                     <description/>
                     <item_prototypes>
                         <item_prototype>
-                            <name>Sentry Project $1 Event (per minute)</name>
+                            <name>Sentry Organization $1 blacklisted event (per minute)</name>
                             <type>2</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>sentry.event.count.[{#PROJECT}]</key>
+                            <key>sentry.organization.event.blacklisted.[{#ORGANIZATION}]</key>
+                            <delay>0</delay>
+                            <history>90d</history>
+                            <trends>365d</trends>
+                            <status>0</status>
+                            <value_type>3</value_type>
+                            <allowed_hosts/>
+                            <units/>
+                            <snmpv3_contextname/>
+                            <snmpv3_securityname/>
+                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                            <snmpv3_authpassphrase/>
+                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                            <snmpv3_privpassphrase/>
+                            <params/>
+                            <ipmi_sensor/>
+                            <authtype>0</authtype>
+                            <username/>
+                            <password/>
+                            <publickey/>
+                            <privatekey/>
+                            <port/>
+                            <description/>
+                            <inventory_link>0</inventory_link>
+                            <applications>
+                                <application>
+                                    <name>Sentry Events</name>
+                                </application>
+                            </applications>
+                            <valuemap/>
+                            <logtimefmt/>
+                            <preprocessing/>
+                            <jmx_endpoint/>
+                            <application_prototypes/>
+                            <master_item_prototype/>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Sentry Organization $1 received event (per minute)</name>
+                            <type>2</type>
+                            <snmp_community/>
+                            <snmp_oid/>
+                            <key>sentry.organization.event.received.[{#ORGANIZATION}]</key>
+                            <delay>0</delay>
+                            <history>90d</history>
+                            <trends>365d</trends>
+                            <status>0</status>
+                            <value_type>3</value_type>
+                            <allowed_hosts/>
+                            <units/>
+                            <snmpv3_contextname/>
+                            <snmpv3_securityname/>
+                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                            <snmpv3_authpassphrase/>
+                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                            <snmpv3_privpassphrase/>
+                            <params/>
+                            <ipmi_sensor/>
+                            <authtype>0</authtype>
+                            <username/>
+                            <password/>
+                            <publickey/>
+                            <privatekey/>
+                            <port/>
+                            <description/>
+                            <inventory_link>0</inventory_link>
+                            <applications>
+                                <application>
+                                    <name>Sentry Events</name>
+                                </application>
+                            </applications>
+                            <valuemap/>
+                            <logtimefmt/>
+                            <preprocessing/>
+                            <jmx_endpoint/>
+                            <application_prototypes/>
+                            <master_item_prototype/>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Sentry Organization $1 rejected event (per minute)</name>
+                            <type>2</type>
+                            <snmp_community/>
+                            <snmp_oid/>
+                            <key>sentry.organization.event.rejected.[{#ORGANIZATION}]</key>
+                            <delay>0</delay>
+                            <history>90d</history>
+                            <trends>365d</trends>
+                            <status>0</status>
+                            <value_type>3</value_type>
+                            <allowed_hosts/>
+                            <units/>
+                            <snmpv3_contextname/>
+                            <snmpv3_securityname/>
+                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                            <snmpv3_authpassphrase/>
+                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                            <snmpv3_privpassphrase/>
+                            <params/>
+                            <ipmi_sensor/>
+                            <authtype>0</authtype>
+                            <username/>
+                            <password/>
+                            <publickey/>
+                            <privatekey/>
+                            <port/>
+                            <description/>
+                            <inventory_link>0</inventory_link>
+                            <applications>
+                                <application>
+                                    <name>Sentry Events</name>
+                                </application>
+                            </applications>
+                            <valuemap/>
+                            <logtimefmt/>
+                            <preprocessing/>
+                            <jmx_endpoint/>
+                            <application_prototypes/>
+                            <master_item_prototype/>
+                        </item_prototype>
+                    </item_prototypes>
+                    <trigger_prototypes/>
+                    <graph_prototypes/>
+                    <host_prototypes/>
+                    <jmx_endpoint/>
+                </discovery_rule>
+                <discovery_rule>
+                    <name>Sentry Projects Discovery</name>
+                    <type>0</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>sentry.projects.discovery[{$SENTRY_URL},{$SENTRY_TOKEN}]</key>
+                    <delay>30</delay>
+                    <status>0</status>
+                    <allowed_hosts/>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <filter>
+                        <evaltype>0</evaltype>
+                        <formula/>
+                        <conditions>
+                            <condition>
+                                <macro>{#TYPE}</macro>
+                                <value>project</value>
+                                <operator>8</operator>
+                                <formulaid>A</formulaid>
+                            </condition>
+                        </conditions>
+                    </filter>
+                    <lifetime>30d</lifetime>
+                    <description/>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>Sentry project $2 blacklisted event (per minute)</name>
+                            <type>2</type>
+                            <snmp_community/>
+                            <snmp_oid/>
+                            <key>sentry.project.event.blacklisted.[{#ORGANIZATION}][{#PROJECT}]</key>
+                            <delay>0</delay>
+                            <history>90d</history>
+                            <trends>365d</trends>
+                            <status>0</status>
+                            <value_type>3</value_type>
+                            <allowed_hosts/>
+                            <units/>
+                            <snmpv3_contextname/>
+                            <snmpv3_securityname/>
+                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                            <snmpv3_authpassphrase/>
+                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                            <snmpv3_privpassphrase/>
+                            <params/>
+                            <ipmi_sensor/>
+                            <authtype>0</authtype>
+                            <username/>
+                            <password/>
+                            <publickey/>
+                            <privatekey/>
+                            <port/>
+                            <description/>
+                            <inventory_link>0</inventory_link>
+                            <applications>
+                                <application>
+                                    <name>Sentry Events</name>
+                                </application>
+                            </applications>
+                            <valuemap/>
+                            <logtimefmt/>
+                            <preprocessing/>
+                            <jmx_endpoint/>
+                            <application_prototypes/>
+                            <master_item_prototype/>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Sentry project $2 received event (per minute)</name>
+                            <type>2</type>
+                            <snmp_community/>
+                            <snmp_oid/>
+                            <key>sentry.project.event.received.[{#ORGANIZATION}][{#PROJECT}]</key>
+                            <delay>0</delay>
+                            <history>90d</history>
+                            <trends>365d</trends>
+                            <status>0</status>
+                            <value_type>3</value_type>
+                            <allowed_hosts/>
+                            <units/>
+                            <snmpv3_contextname/>
+                            <snmpv3_securityname/>
+                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                            <snmpv3_authpassphrase/>
+                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                            <snmpv3_privpassphrase/>
+                            <params/>
+                            <ipmi_sensor/>
+                            <authtype>0</authtype>
+                            <username/>
+                            <password/>
+                            <publickey/>
+                            <privatekey/>
+                            <port/>
+                            <description/>
+                            <inventory_link>0</inventory_link>
+                            <applications>
+                                <application>
+                                    <name>Sentry Events</name>
+                                </application>
+                            </applications>
+                            <valuemap/>
+                            <logtimefmt/>
+                            <preprocessing/>
+                            <jmx_endpoint/>
+                            <application_prototypes/>
+                            <master_item_prototype/>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Sentry project $2 rejected event (per minute)</name>
+                            <type>2</type>
+                            <snmp_community/>
+                            <snmp_oid/>
+                            <key>sentry.project.event.rejected.[{#ORGANIZATION}][{#PROJECT}]</key>
                             <delay>0</delay>
                             <history>90d</history>
                             <trends>365d</trends>
