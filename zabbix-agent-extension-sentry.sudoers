@@ -1,1 +1,0 @@
-zabbix-agent ALL=(ALL) NOPASSWD: /usr/bin/sentry *

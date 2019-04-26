@@ -6,7 +6,6 @@ COMMIT := $(shell git rev-parse --short HEAD)
 
 BINARYNAME := zabbix-agent-extension-sentry
 CONFIG := ${BINARYNAME}.conf
-SUDOERS := ${BINARYNAME}.sudoers
 VERSION := "${DATE}.${COUNT}_${COMMIT}"
 
 LDFLAGS := "-X main.version=${VERSION}"
@@ -41,13 +40,10 @@ install:
 	@echo Install
 	cp .out/${BINARYNAME} /usr/bin/${BINARYNAME}
 	cp ${CONFIG} /etc/zabbix/zabbix_agentd.conf.d/${CONFIG}
-	cp ${SUDOERS} /etc/sudoers.d/${SUDOERS}
-	chmod 440 /etc/sudoers.d/${SUDOERS}
 	@echo Done 
 
 uninstall:
 	@echo Remove
 	rm /usr/bin/${BINARYNAME}
 	rm /etc/zabbix/zabbix_agentd.conf.d/${CONFIG}
-	rm /etc/sudoers.d/${SUDOERS}
 	@echo Done
