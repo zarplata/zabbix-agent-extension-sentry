@@ -63,33 +63,12 @@ func createProjectMetrics(
 			makePrefix(
 				prefix,
 				fmt.Sprintf(
-					"project.event.%s.[%s][%s]",
+					"project.event.%s.[%s,%s]",
 					statType,
 					organization,
 					name),
 			),
 			strconv.Itoa(sumEvents(stats)),
-		),
-	)
-	return metrics
-}
-
-func createQueueMetrics(
-	hostname string,
-	metrics []*zsend.Metric,
-	queueName map[string]string,
-	prefix string,
-) []*zsend.Metric {
-
-	metrics = append(
-		metrics,
-		zsend.NewMetric(
-			hostname,
-			makePrefix(
-				prefix,
-				fmt.Sprintf("queue.[%s]", queueName["queue"]),
-			),
-			queueName["event"],
 		),
 	)
 	return metrics
