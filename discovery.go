@@ -7,9 +7,8 @@ import (
 	sentry "github.com/atlassian/go-sentry-api"
 )
 
-func discoveryOrgsProjects(
+func discoveryOrganizations(
 	organizations []sentry.Organization,
-	projects []sentry.Project,
 ) error {
 	discoveryData := make(map[string][]map[string]string)
 	var discoveredItems []map[string]string
@@ -17,15 +16,6 @@ func discoveryOrgsProjects(
 	for _, organization := range organizations {
 		discoveredItem := make(map[string]string)
 		discoveredItem["{#ORGANIZATION}"] = organization.Name
-		discoveredItem["{#TYPE}"] = "organization"
-		discoveredItems = append(discoveredItems, discoveredItem)
-	}
-
-	for _, project := range projects {
-		discoveredItem := make(map[string]string)
-		discoveredItem["{#PROJECT}"] = project.Name
-		discoveredItem["{#ORGANIZATION}"] = project.Organization.Name
-		discoveredItem["{#TYPE}"] = "project"
 		discoveredItems = append(discoveredItems, discoveredItem)
 	}
 
@@ -40,18 +30,16 @@ func discoveryOrgsProjects(
 	return nil
 }
 
-func discoveryQueue() error {
+func discoveryProjects(
+	projects []sentry.Project,
+) error {
 	discoveryData := make(map[string][]map[string]string)
 	var discoveredItems []map[string]string
 
-	queueNames, err := getQueueEvent()
-	if err != nil {
-		return err
-	}
-
-	for _, queueName := range queueNames {
+	for _, project := range projects {
 		discoveredItem := make(map[string]string)
-		discoveredItem["{#QUEUE}"] = queueName["queue"]
+		discoveredItem["{#PROJECT}"] = project.Name
+		discoveredItem["{#ORGANIZATION}"] = project.Organization.Name
 		discoveredItems = append(discoveredItems, discoveredItem)
 	}
 
